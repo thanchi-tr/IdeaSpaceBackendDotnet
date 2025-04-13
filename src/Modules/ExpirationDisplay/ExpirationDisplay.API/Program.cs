@@ -1,9 +1,10 @@
-
+using Microsoft.Extensions.Hosting;
+using Shared.Messaging;
 namespace ExpirationDisplay.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,9 @@ namespace ExpirationDisplay.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.ConfigureRabbitMq();
             var app = builder.Build();
-
+            await host.InitializeRabbitMqAsync();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
